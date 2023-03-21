@@ -1,0 +1,48 @@
+﻿<Window x:Class="Hotel.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Hotel.Views"
+        xmlns:vm="clr-namespace:Hotel.ViewModels"
+        xmlns:res="clr-namespace:Hotel.Convertors" xmlns:viewmodels="clr-namespace:Hotel.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:LoginVM}"
+        mc:Ignorable="d"
+        Title="Login" Height="474" Width="800">
+    <Window.Resources>
+        <res:UserLoginConv x:Key="abc"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:LoginVM/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Images/login.jpg"></ImageBrush>
+        </Grid.Background>
+        <TextBox Name="Username" Text="{Binding Username}" HorizontalAlignment="Left" TextWrapping="Wrap"  Margin="115,220,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="135" Height="30" />
+        <PasswordBox Name="Password" HorizontalAlignment="Left" Margin="115,255,0,0" VerticalContentAlignment="Center" VerticalAlignment="Top" Width="135" Height="30"/>
+        <ComboBox Name="UserType"
+            HorizontalAlignment="Left" Margin="115,290,0,0" VerticalAlignment="Top" Width="135" Height="30">
+            <ComboBoxItem Content="Administrator"/>
+            <ComboBoxItem Content="Utilizator Conectat"/>
+            <ComboBoxItem Content="Angajat"/>
+        </ComboBox>
+
+        <Label Foreground="Black" Content="Username:" HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top" Height="30" Width="100"/>
+        <Label Foreground="White" Content="Password:" HorizontalAlignment="Left" Margin="10,255,0,0" VerticalAlignment="Top" Height="30" Width="100"/>
+        <TextBlock Foreground="White" TextAlignment="Center" Margin="30,325,550,49" FontSize="12" FontStyle="Italic" Padding="5">
+            Not registered? Press
+            <TextBlock><Hyperlink Click="HyperlinkRegister_Click"> here </Hyperlink></TextBlock>
+            to sign up.
+        </TextBlock>
+        <Button Command="{Binding LoginCommand}" Content="Login" HorizontalAlignment="Left" Margin="72,367,0,0" VerticalAlignment="Top" Height="40" Width="110">
+            <Button.CommandParameter>
+                <MultiBinding Converter="{StaticResource abc}">
+                    <Binding ElementName="Username" Path="Text"/>
+                    <Binding ElementName="Password"/>
+                    <Binding ElementName="UserType" Path="Text"/>
+                </MultiBinding>
+            </Button.CommandParameter>
+        </Button>
+        <Label Foreground="White" Content="State:" HorizontalAlignment="Left" Margin="10,290,0,0" VerticalAlignment="Top" Height="30" Width="100"/>
+    </Grid>
+</Window>

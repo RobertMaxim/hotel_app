@@ -1,0 +1,74 @@
+﻿<Window x:Class="Hotel.Views.SearchWindowAdmin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Hotel.ViewModels" xmlns:ctx="clr-namespace:Hotel.ViewModels"
+        xmlns:res="clr-namespace:Hotel.Convertors"
+        mc:Ignorable="d"
+        Title="SearchWindow" Height="450" Width="800" ResizeMode="NoResize">
+    <Window.DataContext>
+        <ctx:AdminSearchVM/>
+    </Window.DataContext>
+    <Window.Resources>
+        <res:RoomConvert x:Key="abc"></res:RoomConvert>
+    </Window.Resources>
+    <Grid Margin="0,0,0,-6">
+        <Grid.Background>
+            <ImageBrush ImageSource="/Images/hotel.jpg"/>
+        </Grid.Background>
+        <DataGrid Name="grid" HorizontalContentAlignment="Stretch" Margin="25,67,540,58"
+                  Width="Auto" AutoGenerateColumns="False" SelectedValuePath="Room.CameraID" ColumnWidth="*" 
+                  ItemsSource="{Binding RoomList, UpdateSourceTrigger=PropertyChanged}" CanUserResizeColumns="False" CanUserResizeRows="False" 
+                  CanUserSortColumns="True" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False"
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Tip Camera" Binding="{Binding CameraType}"/>
+                <DataGridTextColumn Header="Price" Binding="{Binding Room.Price}"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding Room.Availability}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="See more details" Command="{Binding Details}" CommandParameter="{Binding ElementName=grid, Path=SelectedItem}" HorizontalAlignment="Left" Margin="284,153,0,0" VerticalAlignment="Top" Height="29" Width="116"/>
+        <Button Content="Filter" Command="{Binding Filter}" HorizontalAlignment="Left" Margin="284,119,0,0" VerticalAlignment="Top" Height="29" Width="116"/>
+        <TextBox HorizontalAlignment="Left" Margin="55,10,0,0" HorizontalContentAlignment="Center" 
+                 VerticalContentAlignment="Center" Text="{Binding SearchKeyword}" 
+                 TextWrapping="Wrap" VerticalAlignment="Top" Width="175" Height="34"/>
+        <Button Content="Search" Command="{Binding Search}" HorizontalAlignment="Left" Margin="284,83,0,0" VerticalAlignment="Top" Height="29" Width="116"/>
+        <Button Content="Delete" Command="{Binding Delete}" CommandParameter="{Binding ElementName=grid, Path=SelectedItem}" HorizontalAlignment="Left" Margin="284,221,0,0" VerticalAlignment="Top" Height="29" Width="116"/>
+        <Button Content="Add new room" Command="{Binding Add}" HorizontalAlignment="Left" Margin="284,187,0,0" VerticalAlignment="Top" Height="29" Width="116">
+            <Button.CommandParameter>
+                <MultiBinding Converter="{StaticResource abc}">
+                    <Binding ElementName="TipCamera" Path="Text"/>
+                    <Binding ElementName="Pret" Path="Text"/>
+                    <Binding ElementName="Status" Path="Text"/>
+                </MultiBinding>
+            </Button.CommandParameter>
+        </Button>
+        <TextBox Text="{Binding ElementName=grid, Path=SelectedItem.Room.Price, UpdateSourceTrigger=PropertyChanged}" Name="Pret" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  HorizontalAlignment="Left" Margin="550,90,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="155" Height="27"/>
+        <Label Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Content="Tip camera" HorizontalAlignment="Left" Margin="420,58,0,0" VerticalAlignment="Top" Height="27" Width="110"/>
+        <Label Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Pret" HorizontalAlignment="Left" Margin="420,90,0,0" VerticalAlignment="Top" Height="27" Width="110"/>
+        <Label Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Content="Status" HorizontalAlignment="Left" Margin="420,122,0,0" VerticalAlignment="Top" Height="27" Width="110"/>
+        <ComboBox Text="{Binding ElementName=grid, Path=SelectedItem.Room.Availability, UpdateSourceTrigger=PropertyChanged}"  HorizontalContentAlignment="Center" 
+                  VerticalContentAlignment="Center"  HorizontalAlignment="Left" x:Name="Status" Margin="550,122,0,0" VerticalAlignment="Top" Width="155" Height="27">
+            <ComboBoxItem Content="Liber"></ComboBoxItem>
+            <ComboBoxItem Content="Ocupat"/>
+        </ComboBox>
+        <ComboBox Text="{Binding ElementName=grid, Path=SelectedItem.CameraType, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                  HorizontalAlignment="Left" x:Name="TipCamera" Margin="550,58,0,0" VerticalAlignment="Top" Width="155" Height="27">
+            <ComboBoxItem Content="Single"/>
+            <ComboBoxItem Content="Double"/>
+            <ComboBoxItem Content="Triple"/>
+            <ComboBoxItem Content="King"/>
+            <ComboBoxItem Content="Queen"/>
+            <ComboBoxItem Content="Apartment"/>
+            <ComboBoxItem Content="Twin"/>
+            <ComboBoxItem Content="Studio"/>
+            <ComboBoxItem Content="Penthouse"/>
+        </ComboBox>
+        
+        <Label Foreground="White" Content="RON"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Margin="710,91,0,0" VerticalAlignment="Top"/>
+        <Button Content="Update" Command="{Binding Update}" CommandParameter="{Binding ElementName=grid, Path=SelectedItem}" HorizontalAlignment="Left" Margin="284,255,0,0" VerticalAlignment="Top" Height="27" Width="116">
+            
+        </Button>
+    </Grid>
+</Window>
